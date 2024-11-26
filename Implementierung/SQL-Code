@@ -1,0 +1,21 @@
+CREATE DATABASE IF NOT EXISTS GruppenReservierungen;
+
+USE GruppenReservierungen;
+
+DROP TABLE IF EXISTS Reservierungen;
+DROP TABLE IF EXISTS Gruppen;
+
+CREATE TABLE Gruppen (
+    GruppenID INT AUTO_INCREMENT PRIMARY KEY,
+    Gruppenname VARCHAR(255) NOT NULL UNIQUE,
+    Kontaktinformationen TEXT
+);
+
+CREATE TABLE Reservierungen (
+    ReservierungsID INT AUTO_INCREMENT PRIMARY KEY,
+    GruppenID INT NOT NULL,
+    Gruppengröße INT NOT NULL,
+    Datum DATE NOT NULL,
+    Anforderungen TEXT,
+    FOREIGN KEY (GruppenID) REFERENCES Gruppen(GruppenID)
+);
