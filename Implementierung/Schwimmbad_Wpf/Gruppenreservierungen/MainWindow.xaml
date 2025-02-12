@@ -3,70 +3,89 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Gruppenreservierungen" Height="600" Width="1000">
-    <Grid Background="{DynamicResource MaterialDesignPaper}">
-        <materialDesign:ColorZone Mode="PrimaryDark" Height="60" VerticalAlignment="Top">
-            <TextBlock Text="Reservierungssystem für Gruppen" 
+  <Grid Background="{DynamicResource MaterialDesignPaper}">
+    <materialDesign:ColorZone Mode="PrimaryDark" Height="60" VerticalAlignment="Top">
+      <TextBlock Text="Reservierungssystem für Gruppen" 
                  Foreground="Black" 
                  VerticalAlignment="Center" 
                  FontSize="24" 
                  Margin="20,0"/>
-        </materialDesign:ColorZone>
-        <TabControl Margin="20,80,20,20">
-            <TabItem Header="Neue Reservierung">
-                <Grid Margin="20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Name der Gruppe:" VerticalAlignment="Center" Margin="10"/>
-                    <TextBox x:Name="txtGroupName" Grid.Row="0" Grid.Column="1" Margin="10"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Gruppengröße:" VerticalAlignment="Center" Margin="10"/>
-                    <TextBox x:Name="txtGroupSize" Grid.Row="1" Grid.Column="1" Margin="10"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Reservierungsdatum:" VerticalAlignment="Center" Margin="10"/>
-                    <DatePicker x:Name="dpReservationDate" Grid.Row="2" Grid.Column="1" Margin="10"/>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Besondere Anforderungen:" VerticalAlignment="Top" Margin="10"/>
-                    <TextBox x:Name="txtRequirements" Grid.Row="3" Grid.Column="1" Margin="10" Height="100" AcceptsReturn="True"/>
-                    <Button Grid.Row="4" Grid.Column="1" Content="Reservierung speichern" HorizontalAlignment="Right" Margin="10" 
+    </materialDesign:ColorZone>
+    <TabControl Margin="20,80,20,20">
+      <TabItem Header="Neue Reservierung">
+        <Grid Margin="20">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="Name der Gruppe:" VerticalAlignment="Center" Margin="10"/>
+          <TextBox x:Name="txtGroupName" Grid.Row="0" Grid.Column="1" Margin="10"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Text="Gruppengröße:" VerticalAlignment="Center" Margin="10"/>
+          <TextBox x:Name="txtGroupSize" Grid.Row="1" Grid.Column="1" Margin="10"/>
+          <TextBlock Grid.Row="2" Grid.Column="0" Text="Reservierungsdatum:" VerticalAlignment="Center" Margin="10"/>
+          <DatePicker x:Name="dpReservationDate" Grid.Row="2" Grid.Column="1" Margin="10"
+                      SelectedDateChanged="dpReservationDate_SelectedDateChanged">
+            <DatePicker.CalendarStyle>
+              <Style TargetType="Calendar">
+                <Setter Property="CalendarDayButtonStyle">
+                  <Setter.Value>
+                    <Style TargetType="CalendarDayButton" BasedOn="{StaticResource {x:Type CalendarDayButton}}">
+                      <Style.Triggers>
+                        <Trigger Property="IsBlackedOut" Value="True">
+                          <Setter Property="Background" Value="Red"/>
+                          <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </DatePicker.CalendarStyle>
+            
+          </DatePicker>
+          <TextBlock Grid.Row="3" Grid.Column="0" Text="Besondere Anforderungen:" VerticalAlignment="Top" Margin="10"/>
+          <TextBox x:Name="txtRequirements" Grid.Row="3" Grid.Column="1" Margin="10" Height="100" AcceptsReturn="True"/>
+          <Button Grid.Row="4" Grid.Column="1" Content="Reservierung speichern" HorizontalAlignment="Right" Margin="10" 
                   Style="{StaticResource MaterialDesignRaisedButton}" Click="BtnSaveReservation_Click"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Reservierungen anzeigen">
-                <Grid Margin="20">
-                    <DataGrid x:Name="dgReservations" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" 
+        </Grid>
+      </TabItem>
+      <TabItem Header="Reservierungen anzeigen">
+        <Grid Margin="20">
+          <DataGrid x:Name="dgReservations" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" 
                     Style="{StaticResource MaterialDesignDataGrid}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Gruppe" Binding="{Binding GroupName}" Width="*"/>
-                            <DataGridTextColumn Header="Größe" Binding="{Binding GroupSize}" Width="Auto"/>
-                            <DataGridTextColumn Header="Datum" Binding="{Binding Date}" Width="Auto"/>
-                            <DataGridTextColumn Header="Anforderungen" Binding="{Binding Requirements}" Width="2*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <Button Content="Aktualisieren" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10" 
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="Gruppe" Binding="{Binding GroupName}" Width="*"/>
+              <DataGridTextColumn Header="Größe" Binding="{Binding GroupSize}" Width="Auto"/>
+              <DataGridTextColumn Header="Datum" Binding="{Binding Date}" Width="Auto"/>
+              <DataGridTextColumn Header="Anforderungen" Binding="{Binding Requirements}" Width="2*"/>
+            </DataGrid.Columns>
+          </DataGrid>
+          <Button Content="Aktualisieren" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10" 
                   Style="{StaticResource MaterialDesignFlatButton}" Click="BtnRefreshReservations_Click"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Reservierung suchen">
-                <Grid Margin="20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
-                        <TextBlock Text="Gruppenname:" VerticalAlignment="Center" Margin="10"/>
-                        <TextBox x:Name="txtSearchGroupName" Width="250" Margin="10"/>
-                        <Button Content="Suchen" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" Click="BtnSearchReservation_Click"/>
-                    </StackPanel>
-                    <TextBlock x:Name="txtSearchResult" Grid.Row="1" Margin="10" TextWrapping="Wrap" FontSize="16"/>
-                </Grid>
-            </TabItem>
-        </TabControl>
-    </Grid>
+        </Grid>
+      </TabItem>
+      <TabItem Header="Reservierung suchen">
+        <Grid Margin="20">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+            <TextBlock Text="Gruppenname:" VerticalAlignment="Center" Margin="10"/>
+            <TextBox x:Name="txtSearchGroupName" Width="250" Margin="10"/>
+            <Button Content="Suchen" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" Click="BtnSearchReservation_Click"/>
+          </StackPanel>
+          <TextBlock x:Name="txtSearchResult" Grid.Row="1" Margin="10" TextWrapping="Wrap" FontSize="16"/>
+        </Grid>
+      </TabItem>
+    </TabControl>
+  </Grid>
 </Window>
