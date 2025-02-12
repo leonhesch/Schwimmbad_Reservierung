@@ -1,48 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 
 namespace Gruppenreservierungen
 {
-    public class Reservation
-    {
-        public string GroupName { get; set; }
-        public int GroupSize { get; set; }
-        public string Date { get; set; }
-        public string Requirements { get; set; }
-    }
-
     public partial class MainWindow : Window
     {
-        private const string FilePath = "reservierungen.txt";
+        private DatabaseManager dbManager = new DatabaseManager();
 
         public MainWindow()
         {
             InitializeComponent();
-            
+            dbManager.InitializeDatabase();
         }
 
         private void BtnSaveReservation_Click(object sender, RoutedEventArgs e)
         {
-           
+            MessageBox.Show("Reservieren-Funktion noch nicht implementiert.");
         }
-        
+
         private void BtnRefreshReservations_Click(object sender, RoutedEventArgs e)
         {
-         
-           
+            MessageBox.Show("Aktualisieren-Funktion noch nicht implementiert.");
         }
 
-    
         private void BtnSearchReservation_Click(object sender, RoutedEventArgs e)
         {
-         
-            
+            MessageBox.Show("Such-Funktion noch nicht implementiert.");
         }
-
     }
-    }
-
+}
