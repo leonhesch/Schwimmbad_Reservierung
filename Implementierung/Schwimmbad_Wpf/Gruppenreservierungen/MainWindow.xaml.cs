@@ -135,10 +135,17 @@ namespace Gruppenreservierungen
                 }
                 else
                 {
-                    string output = "Gefundene Reservierungen:\n";
+                    string output = "Gefundene Reservierungen:\n\n";
+                    int index = 1;
                     foreach (var res in results)
                     {
-                        output += $"Gruppe: {res.GroupName}, Größe: {res.GroupSize}, Datum: {res.ReservationDate:dd.MM.yyyy}, Anforderungen: {res.Requirements}\n";
+                        output += $"{index}. Gruppe: {res.GroupName}\n"
+                               + $"   Größe: {res.GroupSize}\n"
+                               + $"   Datum: {res.ReservationDate:dd.MM.yyyy}\n"
+                               + $"   Anforderungen: {res.Requirements}\n\n"                             
+                               + "——————————————————————————————————————\n\n";
+                        
+                 index++;
                     }
                     txtSearchResult.Text = output;
                 }
@@ -148,6 +155,7 @@ namespace Gruppenreservierungen
                 MessageBox.Show("Fehler bei der Suche: " + ex.Message);
             }
         }
+
 
     }
 }

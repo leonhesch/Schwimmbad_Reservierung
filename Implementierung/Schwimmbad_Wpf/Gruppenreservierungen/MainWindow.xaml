@@ -70,20 +70,32 @@
         </Grid>
       </TabItem>
       <TabItem Header="Reservierung suchen">
-        <Grid Margin="20">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
-            <TextBlock Text="Gruppenname:" VerticalAlignment="Center" Margin="10"/>
-            <TextBox x:Name="txtSearchGroupName" Width="250" Margin="10"/>
-            <Button Content="Suchen" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" Click="BtnSearchReservation_Click"/>
-          </StackPanel>
-          <TextBlock x:Name="txtSearchResult" Grid.Row="1" Margin="10" TextWrapping="Wrap" FontSize="16"/>
-        </Grid>
+          <Grid Margin="20">
+              <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <!-- Die zweite Zeile soll den verfügbaren Platz ausfüllen -->
+                  <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+
+              <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+                  <TextBlock Text="Gruppenname:" VerticalAlignment="Center" Margin="10"/>
+                  <TextBox x:Name="txtSearchGroupName" Width="250" Margin="10"/>
+                  <Button Content="Suchen" Margin="10" 
+              Style="{StaticResource MaterialDesignFlatButton}" 
+              Click="BtnSearchReservation_Click"/>
+              </StackPanel>
+
+              <!-- ScrollViewer in Zeile 1 (zweite Zeile) -->
+              <ScrollViewer Grid.Row="1" Margin="10" 
+                  VerticalScrollBarVisibility="Auto" 
+                  HorizontalScrollBarVisibility="Auto">
+                  <TextBlock x:Name="txtSearchResult" 
+                  TextWrapping="Wrap" 
+                  FontSize="16"/>
+              </ScrollViewer>
+          </Grid>
       </TabItem>
-    </TabControl>
+
+        </TabControl>
   </Grid>
 </Window>
