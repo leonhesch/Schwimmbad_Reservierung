@@ -58,17 +58,15 @@
       </TabItem>
       <TabItem Header="Reservierungen anzeigen">
         <Grid Margin="20">
-          <DataGrid x:Name="dgReservations" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" 
-                    Style="{StaticResource MaterialDesignDataGrid}">
-            <DataGrid.Columns>
-              <DataGridTextColumn Header="Gruppe" Binding="{Binding GroupName}" Width="*"/>
-              <DataGridTextColumn Header="Größe" Binding="{Binding GroupSize}" Width="Auto"/>
-              <DataGridTextColumn Header="Datum" Binding="{Binding Date}" Width="Auto"/>
-              <DataGridTextColumn Header="Anforderungen" Binding="{Binding Requirements}" Width="2*"/>
-            </DataGrid.Columns>
-          </DataGrid>
-          <Button Content="Aktualisieren" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10" 
-                  Style="{StaticResource MaterialDesignFlatButton}" Click="BtnRefreshReservations_Click"/>
+            <DataGrid x:Name="dgReservations" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" Style="{StaticResource MaterialDesignDataGrid}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Gruppe" Binding="{Binding GroupName}" Width="*"/>
+                    <DataGridTextColumn Header="Größe" Binding="{Binding GroupSize}" Width="Auto"/>
+                            <DataGridTextColumn Header="Datum" Binding="{Binding ReservationDate, StringFormat=dd.MM.yyyy}" Width="Auto"/>
+                    <DataGridTextColumn Header="Anforderungen" Binding="{Binding Requirements}" Width="2*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Content="Aktualisieren" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" Click="BtnRefreshReservations_Click"/>
         </Grid>
       </TabItem>
       <TabItem Header="Reservierung suchen">

@@ -105,8 +105,17 @@ namespace Gruppenreservierungen
 
         private void BtnRefreshReservations_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Aktualisieren-Funktion ist noch nicht implementiert.");
+            try
+            {
+                List<Reservation> reservations = dbManager.GetReservations();
+                dgReservations.ItemsSource = reservations;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler beim Aktualisieren: " + ex.Message);
+            }
         }
+
 
         private void BtnSearchReservation_Click(object sender, RoutedEventArgs e)
         {

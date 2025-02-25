@@ -203,6 +203,42 @@ namespace Gruppenreservierungen
                 }
             }
         }
+        public List<Reservation> GetReservations()
+        {
+            List<Reservation> reservations = new List<Reservation>();
+
+            using (var connection = new SqlConnection(this.ConnectionString))
+            {
+                connection.Open();
+
+                string query = @"
+            SELECT g.GroupName, g.GroupSize, r.ReservationDate, 
+                   ISNULL(req.RequirementText, '') AS Requirements
+            FROM Reservations r
+            INNER JOIN Groups g ON r.GroupId = g.GroupId
+            LEFT JOIN Requirements req ON r.ReservationId = req.ReservationId
+            ORDER BY r.ReservationDate";
+
+                using (var command = new SqlCommand(query, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Reservation res = new Reservation
+                        {
+                            GroupName = reader["GroupName"].ToString(),
+                            GroupSize = Convert.ToInt32(reader["GroupSize"]),
+                            ReservationDate = Convert.ToDateTime(reader["ReservationDate"]),
+                            Requirements = reader["Requirements"].ToString()
+                        };
+                        reservations.Add(res);
+                    }
+                }
+            }
+            return reservations;
+        }
+
 
     }
+
 }
