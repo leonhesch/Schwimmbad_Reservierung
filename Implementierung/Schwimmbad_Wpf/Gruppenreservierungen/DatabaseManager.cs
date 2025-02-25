@@ -34,7 +34,6 @@ namespace Gruppenreservierungen
             {
                 connection.Open();
 
-
                 string createGroupsTable = @"
                     IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Groups')
                     BEGIN
@@ -49,7 +48,6 @@ namespace Gruppenreservierungen
                 {
                     command.ExecuteNonQuery();
                 }
-
 
                 string createReservationsTable = @"
                     IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Reservations')
@@ -67,7 +65,6 @@ namespace Gruppenreservierungen
                     command.ExecuteNonQuery();
                 }
 
-
                 string createRequirementsTable = @"
                     IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Requirements')
                     BEGIN
@@ -82,7 +79,6 @@ namespace Gruppenreservierungen
                 {
                     command.ExecuteNonQuery();
                 }
-
 
                 string countQuery = "SELECT COUNT(*) FROM Groups";
                 using (var command = new SqlCommand(countQuery, connection))
@@ -107,7 +103,6 @@ namespace Gruppenreservierungen
 
             foreach (var sample in samples)
             {
-
                 string groupInsertQuery = @"
                     INSERT INTO Groups (GroupName, GroupSize, GroupType)
                     VALUES (@GroupName, @GroupSize, @GroupType);
@@ -121,7 +116,6 @@ namespace Gruppenreservierungen
                     groupId = (int)command.ExecuteScalar();
                 }
 
-
                 string reservationInsertQuery = @"
                     INSERT INTO Reservations (GroupId, ReservationDate)
                     VALUES (@GroupId, @ReservationDate);
@@ -134,7 +128,6 @@ namespace Gruppenreservierungen
                     reservationId = (int)command.ExecuteScalar();
                 }
 
-
                 string requirementInsertQuery = @"
                     INSERT INTO Requirements (ReservationId, RequirementText)
                     VALUES (@ReservationId, @RequirementText);";
@@ -143,6 +136,70 @@ namespace Gruppenreservierungen
                     command.Parameters.AddWithValue("@ReservationId", reservationId);
                     command.Parameters.AddWithValue("@RequirementText", sample.RequirementText);
                     command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<DateTime> GetReservedDates()
+        {
+            List<DateTime> reservedDates = new List<DateTime>();
+            using (var connection = new SqlConnection(this.ConnectionString))
+            {
+                connection.Open();
+                string query = "SELECT ReservationDate FROM Reservations";
+                using (var command = new SqlCommand(query, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        reservedDates.Add(reader.GetDateTime(0).Date);
+                    }
+                }
+            }
+            return reservedDates;
+        }
+        public void SaveReservation(string groupName, int groupSize, DateTime reservationDate, string requirements)
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string groupInsertQuery = @"
+            INSERT INTO Groups (GroupName, GroupSize, GroupType)
+            VALUES (@GroupName, @GroupSize, @GroupType);
+            SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                int groupId;
+                using (var command = new SqlCommand(groupInsertQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@GroupName", groupName);
+                    command.Parameters.AddWithValue("@GroupSize", groupSize);
+                    command.Parameters.AddWithValue("@GroupType", "Gruppe");
+                    groupId = (int)command.ExecuteScalar();
+                }
+
+                string reservationInsertQuery = @"
+            INSERT INTO Reservations (GroupId, ReservationDate)
+            VALUES (@GroupId, @ReservationDate);
+            SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                int reservationId;
+                using (var command = new SqlCommand(reservationInsertQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@GroupId", groupId);
+                    command.Parameters.AddWithValue("@ReservationDate", reservationDate);
+                    reservationId = (int)command.ExecuteScalar();
+                }
+
+                if (!string.IsNullOrWhiteSpace(requirements))
+                {
+                    string requirementInsertQuery = @"
+                INSERT INTO Requirements (ReservationId, RequirementText)
+                VALUES (@ReservationId, @RequirementText);";
+                    using (var command = new SqlCommand(requirementInsertQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@ReservationId", reservationId);
+                        command.Parameters.AddWithValue("@RequirementText", requirements);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }

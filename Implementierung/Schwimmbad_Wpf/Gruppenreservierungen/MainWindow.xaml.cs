@@ -66,7 +66,41 @@ namespace Gruppenreservierungen
 
         private void BtnSaveReservation_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Reservierung speichern-Funktion ist noch nicht implementiert.");
+            if (string.IsNullOrWhiteSpace(txtGroupName.Text))
+            {
+                MessageBox.Show("Bitte geben Sie einen Gruppennamen ein.");
+                return;
+            }
+            if (!int.TryParse(txtGroupSize.Text, out int groupSize))
+            {
+                MessageBox.Show("Bitte geben Sie eine gültige Gruppengröße ein.");
+                return;
+            }
+            if (!dpReservationDate.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Bitte wählen Sie ein Reservierungsdatum aus.");
+                return;
+            }
+            DateTime reservationDate = dpReservationDate.SelectedDate.Value;
+            string requirements = txtRequirements.Text;
+
+            try
+            {
+                dbManager.SaveReservation(txtGroupName.Text, groupSize, reservationDate, requirements);
+
+                MessageBox.Show("Reservierung erfolgreich gespeichert.");
+
+                txtGroupName.Clear();
+                txtGroupSize.Clear();
+                dpReservationDate.SelectedDate = null;
+                txtRequirements.Clear();
+
+                UpdateBlackoutDatesFromDatabase();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler beim Speichern der Reservierung: " + ex.Message);
+            }
         }
 
         private void BtnRefreshReservations_Click(object sender, RoutedEventArgs e)
