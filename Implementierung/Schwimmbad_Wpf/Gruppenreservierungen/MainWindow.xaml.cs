@@ -119,7 +119,35 @@ namespace Gruppenreservierungen
 
         private void BtnSearchReservation_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Such-Funktion ist noch nicht implementiert.");
+            string searchTerm = txtSearchGroupName.Text;
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                MessageBox.Show("Bitte geben Sie einen Gruppennamen zum Suchen ein.");
+                return;
+            }
+
+            try
+            {
+                List<Reservation> results = dbManager.SearchReservations(searchTerm);
+                if (results.Count == 0)
+                {
+                    txtSearchResult.Text = "Keine Reservierung gefunden.";
+                }
+                else
+                {
+                    string output = "Gefundene Reservierungen:\n";
+                    foreach (var res in results)
+                    {
+                        output += $"Gruppe: {res.GroupName}, Größe: {res.GroupSize}, Datum: {res.ReservationDate:dd.MM.yyyy}, Anforderungen: {res.Requirements}\n";
+                    }
+                    txtSearchResult.Text = output;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler bei der Suche: " + ex.Message);
+            }
         }
+
     }
 }
