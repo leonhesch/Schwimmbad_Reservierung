@@ -72,9 +72,8 @@
       <TabItem Header="Reservierung suchen">
           <Grid Margin="20">
               <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto"/>
-                  <!-- Die zweite Zeile soll den verfügbaren Platz ausfüllen -->
-                  <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
               </Grid.RowDefinitions>
 
               <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
@@ -85,7 +84,6 @@
               Click="BtnSearchReservation_Click"/>
               </StackPanel>
 
-              <!-- ScrollViewer in Zeile 1 (zweite Zeile) -->
               <ScrollViewer Grid.Row="1" Margin="10" 
                   VerticalScrollBarVisibility="Auto" 
                   HorizontalScrollBarVisibility="Auto">

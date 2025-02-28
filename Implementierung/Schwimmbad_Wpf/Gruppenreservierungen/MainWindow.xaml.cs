@@ -24,15 +24,17 @@ namespace Gruppenreservierungen
                 DateTime selected = dpReservationDate.SelectedDate.Value.Date;
                 foreach (CalendarDateRange range in dpReservationDate.BlackoutDates)
                 {
+                    // Prüfen, ob das Datum im Blackout-Bereich liegt
                     if (selected >= range.Start && selected <= range.End)
                     {
                         MessageBox.Show("Dieser Tag ist bereits reserviert. Bitte wählen Sie einen anderen Termin.");
-                        dpReservationDate.SelectedDate = null;
+                        dpReservationDate.SelectedDate = null; // Zurücksetzen
                         break;
                     }
                 }
             }
         }
+
 
         private List<DateTime> GetReservedDatesFromDatabase()
         {
